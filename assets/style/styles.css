@@ -1,0 +1,9 @@
+.main-container {
+    display: flex;
+    gap: 2rem;
+    padding-top: 0;
+}
+
+aside {
+    max-width: 40%;
+}
