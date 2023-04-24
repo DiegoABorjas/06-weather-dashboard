@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <link rel="stylesheet" href="./assets/style/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     <title>Weather Dashboard</title>
 </head>
 <nav>
@@ -19,13 +20,14 @@
         </aside>
         <section class="container">
             <section>
-                <h3 id="city-date" class="city-date">City (date)</h3>
-                <p id="temp">Temp</p>
-                <p id="wind">Wind</p>
-                <p id="humidity">Humidity</p>
+                <h3 id="city-date" class="city-date"></h3>
+                <p id="temp"></p>
+                <p id="wind"></p>
+                <p id="humidity"></p>
             </section>
-            <section>
-                <h4>5-Day Forecast:</h4>
+            <section id="forecastSection">
+                <h4 id="forecast-title"></h4>
+                <div id="forecast-cards"></div>
             </section>
         </section>
     </main>

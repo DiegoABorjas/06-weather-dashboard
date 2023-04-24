@@ -7,3 +7,12 @@
 aside {
     max-width: 40%;
 }
+
+#forecast-cards {
+    display: flex;
+    gap: 1rem;
+}
+
+article {
+    margin-top: 0
+}
