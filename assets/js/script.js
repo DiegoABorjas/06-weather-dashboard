@@ -16,8 +16,9 @@ function fetchCoordinates(city) {
     
 }
 
-function fetchWeatherForecast(lat, lon) {
-    var FORECAST_API = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`
+// Function to fetch current weather from API
+function fetchCurrentWeather(lat, lon) {
+    var FORECAST_API = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`
 
     return fetch(FORECAST_API)
         .then(function (res) {
@@ -30,8 +31,9 @@ function fetchWeatherForecast(lat, lon) {
         })
 }
 
-function fetchCurrentWeather(lat, lon) {
-    var FORECAST_API = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`
+// Function to fetch weather forecast from API
+function fetchWeatherForecast(lat, lon) {
+    var FORECAST_API = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&cnt=40&appid=${API_KEY}`
 
     return fetch(FORECAST_API)
         .then(function (res) {
@@ -39,11 +41,12 @@ function fetchCurrentWeather(lat, lon) {
             return res.json();
         })
         .then(function (data) {
-            // console.log(data);
+            console.log(data);
             return data;
         })
 }
 
+// Event listener for search button
 document.getElementById('searchButton').addEventListener('click', function() {
     var searchInput = document.getElementById('searchInput');
 
@@ -61,33 +64,47 @@ document.getElementById('searchButton').addEventListener('click', function() {
     });
 })
 
+// Function to render the current results to the page
 function renderCurrentWeather(city) {
     var today = dayjs()
     var cityDate = document.getElementById('city-date')
+    var weatherIcon = document.getElementById('weather-icon')
     var currentTemp = document.getElementById('temp')
     var currentWind = document.getElementById('wind')
     var currentHumidity = document.getElementById('humidity')
     cityDate.textContent = city.name + ` (${today.format('DD/MM/YYYY')})`
+    weatherIcon.setAttribute('src', `https://openweathermap.org/img/wn/${city.weather[0].icon}.png`) 
     currentTemp.textContent = `Temp: ${city.main.temp}`
     currentWind.textContent = `Wind: ${city.wind.speed} MPH`
     currentHumidity.textContent = `Humidity: ${city.main.humidity}%`
 }
 
+// Function to render the weather forecast results to the page
 function renderWeatherForecast(forecast) {
-    var date = dayjs()
+    var date = dayjs()    
     var forecastTitle = document.getElementById('forecast-title')
     var forecastCard = document.getElementById('forecast-cards')
     var forecastSection = document.getElementById('forecastSection')
 
     forecastTitle.textContent = '5-Day Forecast:'
 
-    for (var i=0; i<6; i++) {
-        var cardEl = document.createElement('article');
+    for (var i=3; i<forecast.list.length; i+=8) {
+        var cardEl = document.createElement('article')
         var dateEl = document.createElement('p')
+        var weatherEl = document.createElement('img')
+        var tempEl = document.createElement('p')
+        var windEl = document.createElement('p')
+        var humidityEL = document.createElement('p')
 
-        dateEl.textContent = forecast.list[i].dt_txt
+        date = dayjs.unix(forecast.list[i].dt)
+        dateEl.textContent = date.format('DD/MM/YYYY')
+        weatherEl.setAttribute('src', `https://openweathermap.org/img/wn/${forecast.list[i].weather[0].icon}.png`)
+        tempEl.textContent = `Temp: ${forecast.list[i].main.temp}`
+        windEl.textContent = `Wind: ${forecast.list[i].wind.speed} MPH`
+        humidityEL.textContent = `Humidity: ${forecast.list[i].main.humidity}%`
 
-        cardEl.appendChild(dateEl)
+        cardEl.append(dateEl, weatherEl, tempEl, windEl, humidityEL)
+
         forecastCard.appendChild(cardEl)
         forecastSection.appendChild(forecastCard)
     }    

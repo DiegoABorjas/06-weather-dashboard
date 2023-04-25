@@ -1,12 +1,16 @@
+body {
+    margin-left: 2rem;
+}
+
 .main-container {
     display: flex;
     gap: 2rem;
     padding-top: 0;
 }
 
-aside {
-    max-width: 40%;
-}
+/* aside {
+    max-width: 20%;
+} */
 
 #forecast-cards {
     display: flex;
@@ -14,5 +18,7 @@ aside {
 }
 
 article {
-    margin-top: 0
+    margin-top: 0;
+    min-width: 20%;
+    
 }
