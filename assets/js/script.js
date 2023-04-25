@@ -1,4 +1,5 @@
 const API_KEY = 'edf5c7e48b6700fcd68b1d783895a106'
+var previousSearches = []
 
 // Use Geocoding API to get coordinates from city
 function fetchCoordinates(city) {
@@ -6,11 +7,11 @@ function fetchCoordinates(city) {
 
     return fetch(GEO_CODING_API)
         .then(function (res) {
-            if (!res.ok) throw new Error ('Error!');
+            if (!res.ok) throw new Error ('Error!')
             return res.json();
         })
         .then(function (data) {
-            return [data[0].lat, data[0].lon];
+            return [data[0].lat, data[0].lon]
         })
     
     
@@ -26,7 +27,7 @@ function fetchCurrentWeather(lat, lon) {
             return res.json();
         })
         .then(function (data) {
-            console.log(data);
+            // console.log(data);
             return data;
         })
 }
@@ -41,18 +42,21 @@ function fetchWeatherForecast(lat, lon) {
             return res.json();
         })
         .then(function (data) {
-            console.log(data);
+            // console.log(data);
             return data;
         })
 }
 
-// Event listener for search button
-document.getElementById('searchButton').addEventListener('click', function() {
-    var searchInput = document.getElementById('searchInput');
+// Search weather function
+function searchWeather(searchInput) {
+    var searchInput = document.getElementById('searchInput')
+    var uppserCaseInput = upperCase(searchInput.value)
 
-    if (!searchInput.value.trim()) return;
 
-    fetchCoordinates(searchInput.value).then(function (coords) {
+    if (!uppserCaseInput.trim()) return;
+
+    saveSearch(uppserCaseInput)
+    fetchCoordinates(uppserCaseInput).then(function (coords) {
         var lat = coords[0]
         var lon = coords[1]
         fetchCurrentWeather(lat, lon).then(function (data) {
@@ -61,8 +65,60 @@ document.getElementById('searchButton').addEventListener('click', function() {
         fetchWeatherForecast(lat, lon).then(function (data) {
             renderWeatherForecast(data)
         })
-    });
-})
+    })
+    // renderSavedSearches()
+}
+
+// Function to upperCase first letter of a string
+function upperCase(value) {
+    var upperCaseValue = value.charAt(0).toUpperCase() + value.slice(1)
+    return upperCaseValue
+}
+
+// Function to save a search term
+function saveSearch(searchTerm) {
+    upperSearchTerm = upperCase(searchTerm)
+    for (entry of previousSearches) {
+        if (upperSearchTerm == entry) {
+            return
+        }
+    }
+
+    previousSearches.push(upperSearchTerm)
+    localStorage.setItem('searches', JSON.stringify(previousSearches));
+}
+
+// Function to get saved search terms
+function getSavedSearch() {
+    var storedSearches = JSON.parse(localStorage.getItem('searches'))
+
+    if (storedSearches !== null) {
+        previousSearches = storedSearches
+    }
+}
+
+// Function to render saved searches
+function renderSavedSearches() {
+    getSavedSearch()
+
+    var previousSearchesList = document.getElementById('previous-searches-list')
+    
+    for (entry of previousSearches) {
+        var optionEl = document.createElement('option')
+        optionEl.setAttribute('value', entry)
+        optionEl.textContent = entry
+        previousSearchesList.append(optionEl)
+    }
+}
+
+// Function for selecting previous search terms
+function selectPreviousSearch() {
+    var option = document.getElementById("previous-searches-list").value
+    var searchInput = document.getElementById('searchInput')
+    searchInput.value = option
+    console.log(option)
+    searchWeather(option)
+}
 
 // Function to render the current results to the page
 function renderCurrentWeather(city) {
@@ -81,12 +137,14 @@ function renderCurrentWeather(city) {
 
 // Function to render the weather forecast results to the page
 function renderWeatherForecast(forecast) {
-    var date = dayjs()    
+    var date = dayjs()
     var forecastTitle = document.getElementById('forecast-title')
     var forecastCard = document.getElementById('forecast-cards')
     var forecastSection = document.getElementById('forecastSection')
 
     forecastTitle.textContent = '5-Day Forecast:'
+
+    forecastCard.textContent = ''
 
     for (var i=3; i<forecast.list.length; i+=8) {
         var cardEl = document.createElement('article')
@@ -104,8 +162,10 @@ function renderWeatherForecast(forecast) {
         humidityEL.textContent = `Humidity: ${forecast.list[i].main.humidity}%`
 
         cardEl.append(dateEl, weatherEl, tempEl, windEl, humidityEL)
-
+        
         forecastCard.appendChild(cardEl)
         forecastSection.appendChild(forecastCard)
-    }    
+    }
 }
+
+renderSavedSearches()

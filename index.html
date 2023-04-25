@@ -9,14 +9,19 @@
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     <title>Weather Dashboard</title>
 </head>
-<nav>
+<nav class="container">
     <h2><strong">Weather Dashboard</strong></h2>    
 </nav>
 <body>
-    <main class="main-container">
+    <main class="container" class="main-container">
         <aside>
             <input type="search" id="searchInput" name="search" placeholder="Search for a City">
-            <button id="searchButton">Search</button>
+            <button onclick="searchWeather()" id="searchButton">Search</button>
+            <!-- Select -->
+            <select id="previous-searches-list" onchange="selectPreviousSearch()">
+                <option value="" disabled selected>Previous Searches</option>
+            </select>
+            
         </aside>
         <section>
             <section>

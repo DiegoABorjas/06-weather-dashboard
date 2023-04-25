@@ -1,24 +1,26 @@
-body {
+/* body {
     margin-left: 2rem;
-}
+    max-width: 100%;
+} */
 
-.main-container {
+/* .main-container {
     display: flex;
     gap: 2rem;
     padding-top: 0;
-}
+} */
 
 /* aside {
     max-width: 20%;
 } */
 
-#forecast-cards {
+ #forecast-cards {
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
 }
 
 article {
     margin-top: 0;
+    margin-bottom: 0;
     min-width: 20%;
     
 }
