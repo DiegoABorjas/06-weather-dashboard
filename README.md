@@ -21,7 +21,7 @@ THEN the saved events persist
 
 Here is a screenshot of what the application looks like:
 
-![screenshot](./assets/)
+![screenshot](./assets/images/screenshot.jpg)
 
 Link to the deployed application:
 
