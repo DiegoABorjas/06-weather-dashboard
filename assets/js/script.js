@@ -3,7 +3,7 @@ var previousSearches = []
 
 // Use Geocoding API to get coordinates from city
 function fetchCoordinates(city) {
-    var GEO_CODING_API = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${API_KEY}`
+    var GEO_CODING_API = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${API_KEY}`
 
     return fetch(GEO_CODING_API)
         .then(function (res) {
@@ -19,7 +19,7 @@ function fetchCoordinates(city) {
 
 // Function to fetch current weather from API
 function fetchCurrentWeather(lat, lon) {
-    var FORECAST_API = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`
+    var FORECAST_API = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`
 
     return fetch(FORECAST_API)
         .then(function (res) {
@@ -34,7 +34,7 @@ function fetchCurrentWeather(lat, lon) {
 
 // Function to fetch weather forecast from API
 function fetchWeatherForecast(lat, lon) {
-    var FORECAST_API = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&cnt=40&appid=${API_KEY}`
+    var FORECAST_API = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&cnt=40&appid=${API_KEY}`
 
     return fetch(FORECAST_API)
         .then(function (res) {
@@ -66,7 +66,6 @@ function searchWeather(searchInput) {
             renderWeatherForecast(data)
         })
     })
-    renderCurrentSearch(uppserCaseInput)
     saveSearch(uppserCaseInput)
 }
 
@@ -96,17 +95,6 @@ function getSavedSearch() {
     if (storedSearches !== null) {
         previousSearches = storedSearches
     }
-}
-
-function renderCurrentSearch(searchTerm) {
-    searchTerm = document.getElementById('searchInput')    
-    var capsSearchTerm = upperCase(searchTerm.value)
-
-    var previousSearchesList = document.getElementById('previous-searches-list')
-    var optionEl = document.createElement('option')
-    optionEl.setAttribute('value', capsSearchTerm)
-    optionEl.textContent = capsSearchTerm
-    previousSearchesList.append(optionEl)
 }
 
 // Function to render saved searches
