@@ -55,7 +55,7 @@ function searchWeather(searchInput) {
 
     if (!uppserCaseInput.trim()) return;
 
-    saveSearch(uppserCaseInput)
+    // saveSearch(uppserCaseInput)
     fetchCoordinates(uppserCaseInput).then(function (coords) {
         var lat = coords[0]
         var lon = coords[1]
@@ -66,7 +66,8 @@ function searchWeather(searchInput) {
             renderWeatherForecast(data)
         })
     })
-    // renderSavedSearches()
+    renderCurrentSearch(uppserCaseInput)
+    saveSearch(uppserCaseInput)
 }
 
 // Function to upperCase first letter of a string
@@ -95,6 +96,17 @@ function getSavedSearch() {
     if (storedSearches !== null) {
         previousSearches = storedSearches
     }
+}
+
+function renderCurrentSearch(searchTerm) {
+    searchTerm = document.getElementById('searchInput')    
+    var capsSearchTerm = upperCase(searchTerm.value)
+
+    var previousSearchesList = document.getElementById('previous-searches-list')
+    var optionEl = document.createElement('option')
+    optionEl.setAttribute('value', capsSearchTerm)
+    optionEl.textContent = capsSearchTerm
+    previousSearchesList.append(optionEl)
 }
 
 // Function to render saved searches
