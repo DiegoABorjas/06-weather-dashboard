@@ -55,7 +55,6 @@ function searchWeather(searchInput) {
 
     if (!uppserCaseInput.trim()) return;
 
-    // saveSearch(uppserCaseInput)
     fetchCoordinates(uppserCaseInput).then(function (coords) {
         var lat = coords[0]
         var lon = coords[1]
@@ -116,7 +115,6 @@ function selectPreviousSearch() {
     var option = document.getElementById("previous-searches-list").value
     var searchInput = document.getElementById('searchInput')
     searchInput.value = option
-    console.log(option)
     searchWeather(option)
 }
 
